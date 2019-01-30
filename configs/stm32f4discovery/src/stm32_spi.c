@@ -70,7 +70,12 @@
 void weak_function stm32_spidev_initialize(void)
 {
 #ifdef CONFIG_STM32_SPI1
+# ifdef  CONFIG_ENC28J60
+  (void)stm32_configgpio(GPIO_ENC28J60_CS);  /* ENC28J60 chip select */
+  (void)stm32_configgpio(GPIO_ENC28J60_INTR);
+# else
   (void)stm32_configgpio(GPIO_CS_MEMS);    /* MEMS chip select */
+# endif
 #endif
 #if defined(CONFIG_STM32_SPI2) && defined(CONFIG_SENSORS_MAX31855)
   (void)stm32_configgpio(GPIO_MAX31855_CS); /* MAX31855 chip select */
@@ -126,6 +131,14 @@ void stm32_spi1select(FAR struct spi_dev_s *dev, uint32_t devid, bool selected)
 {
   spiinfo("devid: %d CS: %s\n", (int)devid, selected ? "assert" : "de-assert");
 
+#ifdef CONFIG_ENC28J60
+  if (devid == SPIDEV_ETHERNET(0))
+    {
+      /* Set the GPIO low to select and high to de-select */
+
+      stm32_gpiowrite(GPIO_ENC28J60_CS, !selected);
+    }
+#endif
 #ifdef CONFIG_LCD_ST7567
   if (devid == SPIDEV_DISPLAY(0))
     {

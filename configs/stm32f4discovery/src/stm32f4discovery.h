@@ -286,6 +286,17 @@
 #define GPIO_CS_XEN1210   (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_50MHz|\
                            GPIO_OUTPUT_SET|GPIO_PORTA|GPIO_PIN4)
 
+/* ENC28J60 Ethernet PHY */
+#ifdef CONFIG_ENC28J60
+/* PA1 */
+#  define GPIO_ENC28J60_CS    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_50MHz|\
+                               GPIO_OUTPUT_SET|GPIO_PORTA|GPIO_PIN4)
+/* PE4 */
+#  define GPIO_ENC28J60_INTR  (GPIO_INPUT|GPIO_FLOAT|GPIO_EXTI| \
+                               GPIO_OPENDRAIN|GPIO_PORTE|GPIO_PIN4)
+#endif
+
+
 /* USB OTG FS
  *
  * PA9  OTG_FS_VBUS VBUS sensing (also connected to the green LED)
